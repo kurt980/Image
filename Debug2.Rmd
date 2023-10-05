@@ -1,0 +1,107 @@
+---
+title: "Debug2"
+author: "Chengyan Ji"
+date: "4/27/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data
+
+```{r}
+df_train <- read.csv("C:/Users/Kurt Ji/OneDrive/Desktop/STAT542/Project/archive (1)/fashion-mnist_train.csv")
+df_test <- read.csv("C:/Users/Kurt Ji/OneDrive/Desktop/STAT542/Project/archive (1)/fashion-mnist_test.csv")
+
+```
+
+```{r}
+# create a small random data
+small_df_train <- df_train[sample(1:60000, 6000, replace = FALSE),]
+small_df_test <- df_test[sample(1:10000, 1000, replace = FALSE),]
+```
+
+```{r}
+# PCA
+small_df_train[,2:785] <- small_df_train[,2:785] + rnorm(mean = 0, sd = 0.0001, 784*6000)
+pc_small_train <- princomp(small_df_train[,-1], cor = TRUE)
+```
+
+```{r}
+df_pc_small_train <- pc_small_train$scores[,1:50]
+```
+
+```{r}
+df_pc_small_test <- predict(pc_small_train, small_df_test)[,1:50]
+```
+
+```{r}
+# KNN
+for (i in 1:12) {
+  knn.fit <- knn(train = df_pc_small_train, test = pc_small_test, cl = small_df_train[,1], k = i)
+  pc_knn <- table(knn.fit, small_df_test[,1])
+  print(round(sum(diag(pc_knn)) / 1000, 5))
+}
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```

@@ -1,0 +1,153 @@
+---
+title: "Debug"
+author: "Chengyan Ji"
+date: "4/13/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# packages
+library(MASS)
+library(class)
+```
+
+# Data
+
+```{r}
+df_train <- read.csv("C:/Users/Kurt Ji/OneDrive/Desktop/STAT542/Project/archive (1)/fashion-mnist_train.csv")
+df_test <- read.csv("C:/Users/Kurt Ji/OneDrive/Desktop/STAT542/Project/archive (1)/fashion-mnist_test.csv")
+
+```
+
+```{r}
+# create a small random data
+small_df_train <- df_train[sample(1:60000, 6000, replace = FALSE),]
+small_df_test <- df_test[sample(1:10000, 1000, replace = FALSE),]
+```
+
+```{r}
+# use all data
+# small_df <- df
+```
+
+```{r}
+# check for randomness
+for (i in 0:9) {
+  print(dim(small_df_train[small_df_train[,1] == i,]))
+}
+```
+
+# ```{r}
+# small_df <- rbind(small_df_train, small_df_test)
+# small_df[,2:785] <- small_df[2:785] + rnorm(mean = 0, sd = 0.0001, 784*7000)
+# ```
+# 
+# ```{r}
+# # combine and get PCs
+# pc_small_df <- princomp(small_df[,-1], cor = TRUE)
+# attributes(pc_small_df)
+# ```
+# 
+# ```{r}
+# sum((pc_small_df$sdev^2)[1:50]) / 784
+# ```
+
+# ```{r}
+# # Try PCA
+# 
+# small_df_train[,2:785] <- small_df_train[,2:785] + rnorm(mean = 0, sd = 0.0001, 784*6000)
+# 
+# pc_train <- princomp(small_df_train[,-1], cor = TRUE)
+# attributes(pc_train)
+# ```
+# 
+# ```{r}
+# small_df_test[,2:785] <- small_df_test[,2:785] + rnorm(mean = 0, sd = 0.0001, 784*6000)
+# 
+# pc_test <- princomp(small_df_test[,-1], cor = TRUE)
+# attributes(pc_test)
+# ```
+
+# ```{r}
+# sum((pc_train$sdev^2)[1:50]) / 784
+# sum((pc_test$sdev^2)[1:50]) / 784
+# ```
+
+# ```{r}
+# # Split back
+# # Use 50 PCs on both train and test
+# pc.comp_small_train <- pc_small_df$scores[1:6000,1:50]
+# df_pc_small_train <- cbind(small_df_train[,1], pc.comp_small_train)
+# 
+# pc.comp_small_test <- pc_small_df$scores[6001:7000,1:50]
+# df_pc_small_test <- cbind(small_df_test[,1], pc.comp_small_test)
+# ```
+
+```{r}
+# PCA
+pc_train <- princomp(small_df_train[,-1], cor = TRUE)
+```
+
+
+```{r}
+pc_train$loadings
+```
+
+```{r}
+predict(pc_train, small_df_test)[,1:50]
+```
+
+```{r}
+# use 50 PCs to perform KNN
+# small_df_pc_train <- small_df_pc[1:60000,]
+# small_df_pc_test <- small_df_pc[8001:10000,]
+```
+
+```{r}
+# KNN
+for (i in 5:12) {
+  knn.fit <- knn(train = df_pc_small_train[,2:51], test = df_pc_small_test[,2:51], cl = df_pc_small_train[, 1], k = i)
+  pc_knn <- table(knn.fit, small_df_test[,1])
+  print(round(sum(diag(pc_knn)) / 1000, 5))
+}
+```
+
+```{r}
+pc_knn <- table(knn.fit, df_pc_small_test[,1])
+sum(diag(pc_knn)) / 1000
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
