@@ -1,2 +1,1 @@
-asadsada
-dsafjdajkshfsd
+iNaturalist dataset: https://github.com/visipedia/inat_comp/tree/master/2017#Data
